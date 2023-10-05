@@ -1,4 +1,4 @@
-package com.github_user_search;
+package com.githunt;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

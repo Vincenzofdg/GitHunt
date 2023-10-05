@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "github_user_search.app"
-               BlueprintName = "github_user_search"
-               ReferencedContainer = "container:github_user_search.xcodeproj">
+               BuildableName = "githunt.app"
+               BlueprintName = "githunt"
+               ReferencedContainer = "container:githunt.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "github_user_searchTests.xctest"
-               BlueprintName = "github_user_searchTests"
-               ReferencedContainer = "container:github_user_search.xcodeproj">
+               BuildableName = "githuntTests.xctest"
+               BlueprintName = "githuntTests"
+               ReferencedContainer = "container:githunt.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "github_user_search.app"
-            BlueprintName = "github_user_search"
-            ReferencedContainer = "container:github_user_search.xcodeproj">
+            BuildableName = "githunt.app"
+            BlueprintName = "githunt"
+            ReferencedContainer = "container:githunt.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "github_user_search.app"
-            BlueprintName = "github_user_search"
-            ReferencedContainer = "container:github_user_search.xcodeproj">
+            BuildableName = "githunt.app"
+            BlueprintName = "githunt"
+            ReferencedContainer = "container:githunt.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
