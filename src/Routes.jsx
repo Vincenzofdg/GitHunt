@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import CurrentTheme from './Themes';
 import Config from './Config';
-import InitialSearchStack from './Screens/InitialSearch';
+import Screens from './Screens';
 
 const Stack = createStackNavigator();
 
@@ -13,7 +13,7 @@ function Route() {
     <NavigationContainer theme={CurrentTheme}>
       <StatusBar barStyle="light-content" backgroundColor="black" />
       <Stack.Navigator screenOptions={Config} initialRouteName='Initial'>
-        <Stack.Screen name="Initial" component={InitialSearchStack} />
+        <Stack.Screen name="Initial" component={Screens.InitialSearch} />
       </Stack.Navigator>
     </NavigationContainer>
   );
