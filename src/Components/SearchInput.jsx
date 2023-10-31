@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import { StyleSheet, TextInput, Text, View, TouchableOpacity } from "react-native";
 
 import str from "../Strings";
@@ -24,7 +24,6 @@ function SearchInput({placeholder, action}) {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'black',
-
         borderRadius: 20,
         overflow: "hidden",
         width: '80%',
@@ -34,7 +33,6 @@ const styles = StyleSheet.create({
     },
     btn: {
         backgroundColor: '#1434A4',
-
         justifyContent: "center",
         alignItems: "center",
         padding: 10,

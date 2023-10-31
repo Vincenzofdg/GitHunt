@@ -1,9 +1,11 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import Context from './Context';
 
 function MyProvider({children}) {
-    const obj = {
+    const [loader, setLoader] = useState(false);
 
+    const obj = {
+        loader, setLoader
     }
 
     useEffect(() => {
