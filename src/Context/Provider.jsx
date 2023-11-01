@@ -2,10 +2,12 @@ import {useEffect, useState} from 'react';
 import Context from './Context';
 
 function MyProvider({children}) {
+    const [theme, setTheme] = useState(1);
     const [loader, setLoader] = useState(false);
 
     const obj = {
-        loader, setLoader
+        loader, setLoader,
+        theme, setTheme
     }
 
     useEffect(() => {

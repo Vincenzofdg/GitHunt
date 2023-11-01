@@ -1,31 +1,54 @@
 import { useContext } from 'react';
 import Context from './Context/Context';
-import { StatusBar } from 'react-native';
+import { StatusBar, Image } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import Loader from './Components/Loader';
+
+import Component from './Components';
+import Images from './assets'
 
 import CurrentTheme from './Themes';
 import Config from './Config';
 import Screens from './Screens';
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+const MainMenu = () => {
+  const icon = (name) => {
+    const css = {width: 40, height: 40};
+    return (
+      <Image 
+        source={Images[name]} 
+        style={[css, name === 'Search' && {tintColor: '#F3E5AB'} ]}
+      />
+    )
+  }
+
+  return (
+    <Tab.Navigator initialRouteName='Search' screenOptions={Config.tab} >
+      <Tab.Screen name="History" component={Screens.History} options={{ tabBarIcon: () => icon('History') }} />
+      <Tab.Screen name="Search" component={Screens.Search} options={{ tabBarIcon: () => icon('Search') }} />
+      <Tab.Screen name="Saved" component={Screens.Saved} options={{ tabBarIcon: () => icon('Folder') }} />
+    </Tab.Navigator>
+  )
+}
 
 function Route() {
-  const { loader } = useContext(Context);
-
+  const { loader, theme } = useContext(Context);
 
   return (
     <>
-      { loader && <Loader /> }
-      <NavigationContainer theme={CurrentTheme}>
+      { loader && <Component.Loader /> }
+      <NavigationContainer theme={CurrentTheme[theme]}>
         <StatusBar barStyle="light-content" backgroundColor="black" />
-        <Stack.Navigator screenOptions={Config} initialRouteName='Initial'>
-          <Stack.Screen name="Initial" component={Screens.InitialSearch} />
+        <Stack.Navigator screenOptions={Config.stack} initialRouteName='Initial'>
+          <Stack.Screen name="Initial" component={Screens.Initial} />
+          <Stack.Screen name="TabMenu" component={MainMenu} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
-
   );
 }
 

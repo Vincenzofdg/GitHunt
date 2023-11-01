@@ -1,12 +1,12 @@
 import AnimatedLoader from "react-native-animated-loader";
-import File from "../assets/Loader.json";
+import Asset from "../assets";
 
 function Loader() {
   return (
     <AnimatedLoader
         visible={true}
         overlayColor="transparent"
-        source={File}
+        source={Asset.LoadAnimation}
         animationStyle={{
             width: 200,
             height: 200

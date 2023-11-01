@@ -1,6 +1,6 @@
 import { DefaultTheme } from '@react-navigation/native';
 
-const themes ={
+export default themes ={
     1: {
         ...DefaultTheme,
         colors: {
@@ -9,13 +9,13 @@ const themes ={
             text: 'white'
         }
     },
+    2: {
+        ...DefaultTheme,
+        colors: {
+            ...DefaultTheme.colors,
+            // background: '#000000',
+            background: '#36454F',
+            text: 'white'
+        }
+    },
 }
-
-export default themes[1];
-
-// primary: string;
-// background: string;
-// card: string;
-// text: string;
-// border: string;
-// notification: string;

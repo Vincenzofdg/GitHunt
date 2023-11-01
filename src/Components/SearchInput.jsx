@@ -12,10 +12,14 @@ function SearchInput({placeholder, action}) {
                 value={user}
                 onChangeText={setUser}
                 placeholder={!placeholder ? '' : placeholder}
-                style={{marginLeft: 15}}
+                style={{ textAlign: "center", flex: 1}}
             />
-            <TouchableOpacity style={styles.btn} onPress={() => action(user)}>
-                <Text>{str.searchBtn}</Text>
+            <TouchableOpacity 
+                style={[styles.btn, !user && { backgroundColor: "#6082B6" }]}
+                onPress={() => action(user)}
+                disabled={!user}
+            >
+                <Text style={styles.text}>{str.searchBtn}</Text>
             </TouchableOpacity>
         </View>
     )
@@ -37,6 +41,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 10,
         width: '25%'
+    },
+    text: {
+        fontSize: 16,
+        fontWeight: "600",
     }
 })
 
