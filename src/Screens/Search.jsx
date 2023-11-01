@@ -6,18 +6,19 @@ import localized from "../Strings";
 import Component from "../Components";
 import Service from "../Services";
 
-function Search({navigation, route}) {
+function Search({navigation, route: {name, params}}) {
     const { loader } = useContext(Context);
     const [users, setUsers] = useState([]);
+    const [firstRender, setFirstRender] = useState(true);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [toSearch, setToSearch] = useState('');
-    const str = localized[route.name];
+    const str = localized[name];
 
     useEffect(() => {
-        setUsers(route.params.users);
-        setTotal(route.params.total);
-        setToSearch(route.params.searched)
+        setUsers(params.users);
+        setTotal(params.total);
+        setToSearch(params.searched)
     }, []);
 
     const renderCard = ({item}) => <Component.Card nav={navigation} info={item} />
@@ -39,28 +40,30 @@ function Search({navigation, route}) {
  
     }
 
-    return !loader && (
+    return (
         <>
-            <FlatList 
-                data={users}
-                renderItem={renderCard}
-                keyExtractor={({id}) => `user-${id}`}
-                ListHeaderComponent={() => (
-                    <View style={{marginTop: 10}}>
-                        <Component.OnChangeSearch 
-                            state={{
-                                value: toSearch, 
-                                action: setToSearch
-                            }}
-                        />
-                        <View style={styles.countContainer}>
-                            <Text style={styles.text}>{str.total + total}</Text>
-                        </View>
-                    </View>
-                )}
-                onEndReached={moreData}
-                onEndReachedThreshold={0.1}
-            />
+            <View style={{marginTop: 10}}>
+                <Component.OnChangeSearch 
+                    state={{ value: toSearch, action: setToSearch }}
+                    updateUsers={setUsers}
+                    updateTotal={setTotal}
+                    isAllowed={{state: firstRender, change: setFirstRender}}
+                />
+                <View style={styles.countContainer}>
+                    <Text style={styles.text}>{str.total + (!loader ? total : '-')}</Text>
+                </View>
+            </View>
+            {!loader && (
+
+                <FlatList 
+                    data={users}
+                    renderItem={renderCard}
+                    keyExtractor={({id}) => `user-${id}`}
+                    onEndReached={moreData}
+                    onEndReachedThreshold={0.1}
+                />
+
+            )}
         </>
     )
 }
@@ -70,7 +73,7 @@ const styles = StyleSheet.create({
         width: "90%",
         alignSelf: "center",
         alignItems: "flex-end",
-        marginBottom: 30
+        marginBottom: 10
     },
     text: {
         backgroundColor: 'rgb(07,25,51)',

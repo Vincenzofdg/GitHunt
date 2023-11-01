@@ -1,15 +1,37 @@
+import { useEffect } from "react";
 import { StyleSheet, TextInput, View, Image } from "react-native";
 
+import Hooks from "../Hooks";
+import Service from "../Services";
 import images from '../assets';
 import str from "../Strings";
 
-function Search({state: {value, action}}) {
+function Search({state, updateUsers, updateTotal, isAllowed}) {
+    const debouncedValue = Hooks.useDebounce(state.value);
+
+    useEffect(() => {
+        async function FetchData() {
+            const {total, users} = await Service.findUsers(state.value, 1);
+            
+            updateUsers(users)
+            updateTotal(total)
+        }
+
+        if (!!debouncedValue) {
+            if (!!isAllowed.state) {
+                isAllowed.change(false)
+                return
+            }
+            FetchData()
+        }
+    }, [debouncedValue])
+
     return (
         <View style={styles.container}>
             <Image style={styles.icon} source={images.Lupa} />
             <TextInput
-                value={value}
-                onChangeText={action}
+                value={state.value}
+                onChangeText={state.action}
                 placeholder={str.placeholder}
                 style={styles.input}
             />
