@@ -3,7 +3,8 @@ const strings = {
         title: "Search for user on GitHub",
     },
     Search: {
-        total: "Total: "
+        total: "Total: ",
+        noUsers: "user not found"
     },
     searchBtn: "search",
     placeholder: "username"

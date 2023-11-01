@@ -4,6 +4,8 @@ import History from './history.png';
 import Search from './search.png';
 import Lupa from './lupa.png';
 import Arrow from './arrow.png';
+import Star from './star.png';
+import Placeholder from './placeholder.png';
 
 export default {
   LoadAnimation: Loader,
@@ -11,5 +13,7 @@ export default {
   History,
   Search,
   Lupa,
-  Arrow
+  Arrow,
+  Star,
+  Placeholder
 };

@@ -12,7 +12,6 @@ function Search({state, updateUsers, updateTotal, isAllowed}) {
     useEffect(() => {
         async function FetchData() {
             const {total, users} = await Service.findUsers(state.value, 1);
-            
             updateUsers(users)
             updateTotal(total)
         }
@@ -23,6 +22,10 @@ function Search({state, updateUsers, updateTotal, isAllowed}) {
                 return
             }
             FetchData()
+        }
+
+        if (!debouncedValue && !isAllowed.state) {
+            updateUsers([])
         }
     }, [debouncedValue])
 

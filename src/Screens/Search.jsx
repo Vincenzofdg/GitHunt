@@ -25,9 +25,6 @@ function Search({navigation, route: {name, params}}) {
 
     const moreData = async () => {
         if (users.length === total) return
-
-        console.log(users.length)
-
         const nextPage = page + 1;
 
         try {
@@ -37,7 +34,6 @@ function Search({navigation, route: {name, params}}) {
         } catch (error) {
             return [];
         }
- 
     }
 
     return (
@@ -53,8 +49,7 @@ function Search({navigation, route: {name, params}}) {
                     <Text style={styles.text}>{str.total + (!loader ? total : '-')}</Text>
                 </View>
             </View>
-            {!loader && (
-
+            {!loader && (users.length !== 0  ? (
                 <FlatList 
                     data={users}
                     renderItem={renderCard}
@@ -62,8 +57,11 @@ function Search({navigation, route: {name, params}}) {
                     onEndReached={moreData}
                     onEndReachedThreshold={0.1}
                 />
-
-            )}
+            ) : (
+                    <View style={styles.noUsers}>
+                        <Text style={styles.noUsers.text}>{str.noUsers}</Text>
+                    </View>
+            ))}
         </>
     )
 }
@@ -84,6 +82,17 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 15,
         fontSize: 16,
         fontWeight: '600'
+    },
+    noUsers: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        text: {
+            color: 'gray',
+            fontSize: 18,
+            fontWeight: '600',
+            marginBottom: 150
+        }
     }
 })
 
