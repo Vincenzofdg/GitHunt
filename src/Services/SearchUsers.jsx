@@ -1,11 +1,13 @@
 import GitHub from "./url";
 
-export const SearchUsers = async (username) => {
+export const SearchUsers = async (username, page) => {
     try {
-        const { data } = await GitHub.get(`/search/users?q=${username}&per_page=20`,);
+        const perPage = 10;
+        const { data } = await GitHub.get(`/search/users?q=${username}&per_page=${perPage}&page=${page}`,);
+
         return {
             total: data.total_count,
-            users: data.items,
+            users: data.items
         }
     } catch (error) {
         console.error('Erro ao buscar o usuário:', error);

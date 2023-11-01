@@ -10,14 +10,14 @@ function InitialSearch({navigation, route}) {
     const str = localized[route.name];
 
     const handlePress = async (value) => {
-        const data = await Service.findUsers(value);
+        const data = await Service.findUsers(value, 1);
         
         setLoader(true)
         setTheme(2);
 
         navigation.navigate('TabMenu', {
             screen: 'Search',
-            params: data
+            params: {...data, searched: value}
         });
 
         setTimeout(() => setLoader(false), 2000)
@@ -27,10 +27,7 @@ function InitialSearch({navigation, route}) {
         <SafeAreaView style={styles.screen}>
             <View style={styles.container}>
                 <Text style={styles.text}>{str.title}</Text>
-                <Component.Search 
-                    placeholder={str.placeholder}
-                    action={handlePress}
-                />
+                <Component.Search action={handlePress} />
             </View>
         </SafeAreaView>
     )

@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, Text, View, TouchableOpacity } from "react-nativ
 
 import str from "../Strings";
 
-function SearchInput({placeholder, action}) {
+function SearchInput({action}) {
     const [user, setUser] = useState('');
 
     return (
@@ -11,10 +11,10 @@ function SearchInput({placeholder, action}) {
             <TextInput
                 value={user}
                 onChangeText={setUser}
-                placeholder={!placeholder ? '' : placeholder}
+                placeholder={str.placeholder}
                 style={{ textAlign: "center", flex: 1}}
             />
-            <TouchableOpacity 
+            <TouchableOpacity
                 style={[styles.btn, !user && { backgroundColor: "#6082B6" }]}
                 onPress={() => action(user)}
                 disabled={!user}

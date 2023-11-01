@@ -1,9 +1,12 @@
 const strings = {
     Initial: {
         title: "Search for user on GitHub",
-        placeholder: "username"
     },
-    searchBtn: "search"
+    Search: {
+        total: "Total: "
+    },
+    searchBtn: "search",
+    placeholder: "username"
 }
 
 export default strings;

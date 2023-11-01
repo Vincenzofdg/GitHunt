@@ -17,11 +17,11 @@ const Tab = createBottomTabNavigator();
 
 const MainMenu = () => {
   const icon = (name) => {
-    const css = {width: 40, height: 40};
+    const css = {width: 35, height: 35};
     return (
       <Image 
         source={Images[name]} 
-        style={[css, name === 'Search' && {tintColor: '#F3E5AB'} ]}
+        style={css}
       />
     )
   }
@@ -45,6 +45,7 @@ function Route() {
         <StatusBar barStyle="light-content" backgroundColor="black" />
         <Stack.Navigator screenOptions={Config.stack} initialRouteName='Initial'>
           <Stack.Screen name="Initial" component={Screens.Initial} />
+          <Stack.Screen name="User" component={Screens.User} />
           <Stack.Screen name="TabMenu" component={MainMenu} />
         </Stack.Navigator>
       </NavigationContainer>
