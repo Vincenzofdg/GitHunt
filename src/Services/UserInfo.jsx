@@ -9,7 +9,6 @@ export const UserInfo = async (username) => {
             username: data.login,
             followers: data.followers,
             following: data.following,
-            
         }
     } catch (error) {
         console.error('Erro ao buscar o usuário:', error);
