@@ -46,6 +46,9 @@ function Route() {
         <Stack.Navigator screenOptions={Config.stack} initialRouteName='Initial'>
           <Stack.Screen name="Initial" component={Screens.Initial} />
           <Stack.Screen name="User" component={Screens.User} />
+
+          <Stack.Screen name="WebRepo" component={Screens.WebPage} />
+
           <Stack.Screen name="TabMenu" component={MainMenu} />
         </Stack.Navigator>
       </NavigationContainer>

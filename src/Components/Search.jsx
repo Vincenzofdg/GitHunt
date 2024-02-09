@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
+import Context from "../Context/Context";
 import { StyleSheet, TextInput, View, Image } from "react-native";
 
 import Hooks from "../Hooks";
@@ -7,18 +8,22 @@ import images from '../assets';
 import str from "../Strings";
 
 function Search({state, updateUsers, updateTotal, isAllowed}) {
+    const { history, setHistory } = useContext(Context);
     const debouncedValue = Hooks.useDebounce(state.value);
+
 
     useEffect(() => {
         async function FetchData() {
             const {total, users} = await Service.findUsers(state.value, 1);
             updateUsers(users)
             updateTotal(total)
+            handleHistory(debouncedValue);
         }
 
         if (!!debouncedValue) {
             if (!!isAllowed.state) {
-                isAllowed.change(false)
+                isAllowed.change(false);
+                handleHistory(debouncedValue);
                 return
             }
             FetchData()
@@ -27,7 +32,15 @@ function Search({state, updateUsers, updateTotal, isAllowed}) {
         if (!debouncedValue && !isAllowed.state) {
             updateUsers([])
         }
-    }, [debouncedValue])
+    }, [debouncedValue]);
+
+    const handleHistory = async (user) => {
+        const historyList = await Hooks.history();
+        if (!!historyList.includes(user)) return;
+        historyList.push(user);
+        await Hooks.createCache("history", historyList);
+        return
+    }
 
     return (
         <View style={styles.container}>
@@ -59,7 +72,8 @@ const styles = StyleSheet.create({
         textAlign: "left",
         flex: 1,
         fontSize: 20,
-        padding: 20
+        padding: 20,
+        color: "white"
     },
     icon: {
         width: 35,

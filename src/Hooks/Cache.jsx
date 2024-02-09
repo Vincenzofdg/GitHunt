@@ -14,3 +14,9 @@ export const checkCache = async (name) => {
 
     return false
 }
+
+export const history = async () => {
+    const cache = await AsyncStorage.getItem('history');
+    const data = JSON.parse(cache);
+    return data
+}

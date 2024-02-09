@@ -3,6 +3,7 @@ import GitHub from "./url";
 export const UserInfo = async (username) => {
     try {
         const { data } = await GitHub.get(`/users/${username}`,);
+        // console.log(data)
         return {
             foto: data.avatar_url,
             name: data.name,

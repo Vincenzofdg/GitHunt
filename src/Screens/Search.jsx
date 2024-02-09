@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import Context from "../Context/Context";
-import { StyleSheet, FlatList, View, Text } from "react-native";
+import { StyleSheet, FlatList, View, Text, SafeAreaView } from "react-native";
 
 import localized from "../Strings";
 import Component from "../Components";
@@ -37,7 +37,7 @@ function Search({navigation, route: {name, params}}) {
     }
 
     return (
-        <>
+        <SafeAreaView>
             <View style={{marginTop: 10}}>
                 <Component.OnChangeSearch 
                     state={{ value: toSearch, action: setToSearch }}
@@ -58,11 +58,11 @@ function Search({navigation, route: {name, params}}) {
                     onEndReachedThreshold={0.1}
                 />
             ) : (
-                    <View style={styles.noUsers}>
+                    <SafeAreaView style={styles.noUsers}>
                         <Text style={styles.noUsers.text}>{str.noUsers}</Text>
-                    </View>
+                    </SafeAreaView>
             ))}
-        </>
+        </SafeAreaView>
     )
 }
 
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         width: "90%",
         alignSelf: "center",
         alignItems: "flex-end",
-        marginBottom: 10
+        marginBottom: 10,
     },
     text: {
         backgroundColor: 'rgb(07,25,51)',
@@ -81,7 +81,8 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,
         fontSize: 16,
-        fontWeight: '600'
+        fontWeight: '600',
+        color: "white",
     },
     noUsers: {
         flex: 1,

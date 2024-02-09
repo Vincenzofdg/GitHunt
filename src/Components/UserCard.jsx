@@ -42,9 +42,11 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         textAlign: "center",
         padding: 5,
+        color: "white"
     },
     text: {
         fontWeight: '600',
+        color: "white",
     }
 })
 

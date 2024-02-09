@@ -1,70 +1,133 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, ScrollView, Image, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, ScrollView, Image, View, SafeAreaView } from "react-native";
 import Service from '../Services';
 import images from '../assets';
 
 function User({navigation, route}) {
-    const [info, setInfo] = useState([]);
+    const [info, setInfo] = useState({});
+    const [repo, setRepo] = useState([]);
 
     useEffect(() => {
         async function FetchData() {
-            const data = await Service.User(route.params.name);
+            const { name } = route.params
 
-            console.log(data)
+            const promises = [
+                Service.User(name),
+                Service.Repo(name)
+            ];
 
-            setInfo(data)
+            const [basicInfo, repos] = await Promise.all(promises);
+
+            setInfo({
+                ...basicInfo,
+                repoQtd: repos.length,
+            })
+
+            setRepo(repos);
         }
         FetchData()
     }, [])
 
     return (
-        <ScrollView style={{flex: 1}}>
-            <TouchableOpacity style={styles.return} onPress={() => navigation.goBack()}>
-                <Image source={images.Arrow} style={styles.return.icon} />
-                <Text style={styles.title}>Return</Text>
-            </TouchableOpacity>
-            <View style={styles.header}>
-                
-                <Image 
-                    source={!!info.foto ? {uri: info.foto} : images.Placeholder} 
-                    style={styles.foto}
-                />
-
-                <View style={styles.headerContent}>
-
-                    <View>
-                        {info.name && <Text style={[styles.title, {textAlign: "center"}]}>{info.name}</Text>}
-                        <Text style={[styles.title, {textAlign: "right", fontSize: 12}]}>{info.username}</Text>
-                    </View>
-
-                    <View style={styles.generalStats}>
-                        <View style={{padding: 2, backgroundColor: 'red'}}>
-                            <Text style={[styles.title]}>{info.followers}</Text>
-                            <Text style={[styles.title, {fontSize: 14}]}>Followers</Text>
+        <SafeAreaView style={{ flex: 1 }}>
+            <ScrollView >
+                <TouchableOpacity style={styles.return} onPress={() => navigation.goBack()}>
+                    <Image source={images.Arrow} style={styles.return.icon} />
+                    <Text style={[styles.title, { color: "white" }]}>Return</Text>
+                </TouchableOpacity>
+                <View style={styles.header}>
+                    <Image 
+                        source={!!info.foto ? {uri: info.foto} : images.Placeholder} 
+                        style={styles.foto}
+                    />
+                    <View style={styles.headerContent}>
+                        <View style={{ width: "100%" }}>
+                            {info.name && <Text style={[styles.title, {textAlign: "center"}]}>{info.name}</Text>}
+                            <Text style={[styles.title, {textAlign: "right", fontSize: 12}]}>{info.username}</Text>
                         </View>
-                        <View style={{padding: 2, backgroundColor: 'red'}}>
-                            <Text style={styles.title}>{info.following}</Text>
-                            <Text style={[styles.title, {fontSize: 14}]}>Following</Text>
+                        <View style={styles.generalStats}>
+                            <View style={{ padding: 2 }}>
+                                <Text style={[styles.title, { textAlign: "center" }]}>{info.followers}</Text>
+                                <Text style={[styles.title, { fontSize: 14 }]}>Followers</Text>
+                            </View>
+                            <View style={ styles.bar } />
+                            <View style={{ padding: 2 }}>
+                                <Text style={[styles.title, { textAlign: "center" }]}>{info.following}</Text>
+                                <Text style={[styles.title, {fontSize: 14}]}>Following</Text>
+                            </View>
+                            <View style={ styles.bar } />
+                            <View style={{ padding: 2 }}>
+                                <Text style={[styles.title, { textAlign: "center" }]}>{info.repoQtd}</Text>
+                                <Text style={[styles.title, {fontSize: 14}]}>Projects</Text>
+                            </View>
                         </View>
-                        {/* <Text style={[styles.title]}>{info.following}</Text> */}
                     </View>
                 </View>
-            </View>
-        </ScrollView>
+
+
+
+
+                <View style={styles.publicRepo}>
+                    <Text style={{color: "white", fontWeight: "600"}}>Public Repositories:</Text>
+                    {
+                        repo.map((project, i)  => {
+                            const { name, description, html_url, language, forks_count, watchers, created_at, updated_at } = project;
+
+                            // exclude github readme
+                            if (name.toLowerCase() === info.username.toLowerCase() ) return
+
+                            const newCreated = new Date(created_at);
+                            const newUpdated = new Date(updated_at);
+
+                            const created = newCreated.toLocaleDateString('en-US', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: '2-digit'
+                            });
+
+                            const updated = newUpdated.toLocaleDateString('en-US', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: '2-digit'
+                            });
+       
+                            return (
+                                <TouchableOpacity key={name + "-" + i} style={styles.cardRepo} onPress={() => navigation.navigate('WebRepo', { url: html_url })}>
+                                    <Text style={[styles.cardRepo.text, {position: "absolute", padding: 10, right: 0, color: "#89CFF0"}]}>{language}</Text>
+                                    <Text style={styles.cardRepo.text}>{name}</Text>
+                                    {!!description && <Text style={[styles.cardRepo.text, {padding: 15, fontWeight: "400", textAlign: "justify"}]}>{description}</Text>}
+                                    
+                                    <Text style={[styles.cardRepo.text, { paddingLeft: 15, marginTop: 5 }]}>{`Created: ${created} - ${(created_at.split("T"))[1].slice(0, -1)}`}</Text>
+                                    <Text style={[styles.cardRepo.text, { paddingLeft: 15, marginTop: 5 }]}>{`Updated: ${updated} - ${(updated_at.split("T"))[1].slice(0, -1)}`}</Text>
+
+                                    <Text style={[styles.cardRepo.text, { paddingLeft: 15, marginTop: 12, textAlign: "right" }]}>{`Forkes: ${forks_count}`}</Text>
+                                    <Text style={[styles.cardRepo.text, { paddingLeft: 15, marginTop: 5, textAlign: "right"  }]}>{`Watchers: ${watchers}`}</Text>
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
+                </View>
+
+
+
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     return: {
         backgroundColor: 'rgb(07,25,51)',
+        width: "30%",
         flexDirection: 'row',
         alignItems: "center",
-        padding: 5,
+        padding: 10,
+        borderRadius: 50,
+        marginLeft: 15,
         icon: {
-            width: 35,
-            height: 35,
-            marginRight: 30,
-            marginLeft: 5,
+            width: 25,
+            height: 25,
+            marginRight: 10,
         }
     },
     title: {
@@ -85,22 +148,39 @@ const styles = StyleSheet.create({
     headerContent: {
         flex: 1,
         padding: 8,
-        justifyContent: "space-between"
+        justifyContent: "center",
+        alignItems: "center",
     },
     generalStats: {
-        backgroundColor: 'green',
-        flexDirection: "row"
+        marginTop: 5,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    bar: {
+        width: 1.5,
+        height: 20,
+        backgroundColor: "black",
+        borderRadius: 20,
+        marginLeft: 10,
+        marginRight: 10
+    },
+    publicRepo: {
+        backgroundColor: 'rgb(07,25,51)',
+        marginTop: 40,
+        padding: 20,
+        borderRadius: 10
+    },
+    cardRepo: {
+        backgroundColor: "#36454F",
+        marginTop: 20,
+        padding: 15,
+        borderRadius: 15,
+        text: {
+            fontWeight: "600",
+            color: "#D3D3D3",
+        }
     }
 })
 
 export default User;
-
-// ["login", "id", "node_id", "avatar_url", 
-// "gravatar_id", "url", "html_url", "followers_url", 
-// "following_url", "gists_url", "starred_url", 
-// "subscriptions_url", "organizations_url", 
-// "repos_url", "events_url", "received_events_url", 
-// "type", "site_admin", "name", 
-// "company", "blog", "location", "email", 
-// "hireable", "bio", "twitter_username", "public_repos", 
-// "public_gists", "followers", "following", "created_at", "updated_at"]

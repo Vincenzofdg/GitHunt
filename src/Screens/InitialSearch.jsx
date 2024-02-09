@@ -1,16 +1,32 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Context from "../Context/Context";
 import { StyleSheet, SafeAreaView, View, Text } from "react-native";
 import Component from "../Components";
 import Service from "../Services";
 import localized from "../Strings";
+import Hooks from "../Hooks";
 
 function InitialSearch({navigation, route}) {
     const { setTheme, loader, setLoader } = useContext(Context);
     const str = localized[route.name];
 
+    useEffect(() => {
+        async function Jobs() {
+            const hasHistory = await Hooks.checkCache('history')
+            if (!!hasHistory) return
+            await Hooks.createCache("history", [])
+        }
+        Jobs()
+    }, [])
+
     const handlePress = async (value) => {
         const data = await Service.findUsers(value, 1);
+        const historyList = await Hooks.history();
+
+        if (!historyList.includes(value)) {
+            historyList.push(value);
+            await Hooks.createCache("history", historyList)
+        }
         
         setLoader(true)
         setTheme(2);
@@ -47,7 +63,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         marginBottom: 10,
         fontSize: 18,
-        fontWeight: '600'
+        fontWeight: '600',
     }
 })
 

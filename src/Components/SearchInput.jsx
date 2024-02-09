@@ -12,7 +12,7 @@ function SearchInput({action}) {
                 value={user}
                 onChangeText={setUser}
                 placeholder={str.placeholder}
-                style={{ textAlign: "center", flex: 1}}
+                style={{ textAlign: "center", flex: 1, color: "white" }}
             />
             <TouchableOpacity
                 style={[styles.btn, !user && { backgroundColor: "#6082B6" }]}
@@ -40,11 +40,13 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         padding: 10,
-        width: '25%'
+        width: '25%',
+        color: "white",
     },
     text: {
         fontSize: 16,
         fontWeight: "600",
+        color: "white",
     }
 })
 
